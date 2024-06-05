@@ -1,0 +1,45 @@
+Zadanie 1.
+Napisz skrypt, który będzie wypisywał liczby od 10 do 1 co 2.
+
+Odpowiedź:
+#!/bin/bash
+
+for n in $(seq 10 -2 1)
+do
+	echo $n
+done
+
+Wyjaśnienie:
+Uzycie funkcji seq jest tutaj sporym uproszczeniem. Podaje początkową wartość
+czyli 10, krok czyli co ile będzie przeskakiwać (-2) i wartość końcową 1.
+
+Zadanie 2.
+Napisz skrypt, który będzie wypisywał argumenty wywołania skryptu napisane
+w cudzysłowach.
+
+Odpowiedź:
+#!/bin/bash
+
+for argument in "$@"
+do
+	echo "\"$argument\""
+done
+
+Wyjaśnienie:
+Aby wywołać program należy wpisać ./"nazwa_scryptu.sh" "argument 1" "argument 2" [...]
+
+Zadanie 3.
+Napisz skrypt, który wypisze listę plików i katalogów bieżącego katalogu
+poprzedzając każdą nazwę pliku tekstem "Patrzcie Państwo, oto plik: ".
+
+Odpowiedź:
+#!/bin/bash
+
+IFS=$'\n'
+
+for filelist in $(ls)
+do
+	echo "Patrzcie Państwo, oto plik: $filelist"
+done
+
+Zadanie 4.
