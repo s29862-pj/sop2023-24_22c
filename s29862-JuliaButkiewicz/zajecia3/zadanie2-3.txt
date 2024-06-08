@@ -1,0 +1,136 @@
+Zadanie 1.
+Napisz skrypt, który będzie wypisywał liczby od 10 do 1 co 2.
+
+Odpowiedź:
+#!/bin/bash
+
+for n in $(seq 10 -2 1)
+do
+	echo $n
+done
+
+Wyjaśnienie:
+Uzycie funkcji seq jest tutaj sporym uproszczeniem. Podaje początkową wartość
+czyli 10, krok czyli co ile będzie przeskakiwać (-2) i wartość końcową 1.
+
+Zadanie 2.
+Napisz skrypt, który będzie wypisywał argumenty wywołania skryptu napisane
+w cudzysłowach.
+
+Odpowiedź:
+#!/bin/bash
+
+for argument in "$@"
+do
+	echo "\"$argument\""
+done
+
+Wyjaśnienie:
+Aby wywołać program należy wpisać ./"nazwa_scryptu.sh" "argument 1" "argument 2" [...]
+
+Zadanie 3.
+Napisz skrypt, który wypisze listę plików i katalogów bieżącego katalogu
+poprzedzając każdą nazwę pliku tekstem "Patrzcie Państwo, oto plik: ".
+
+Odpowiedź:
+#!/bin/bash
+
+IFS=$'\n'
+
+for filelist in $(ls)
+do
+	echo "Patrzcie Państwo, oto plik: $filelist"
+done
+
+Zadanie 4.
+Napisz skrypt, który dla każdego pliku w bieżącym katalogu,
+który ma rozszerzenie .c wykona taką komendę:
+- cc (tu_nazwa_pliku) -o (tu_nazwa_pliku_bez_rozszerzenia).
+
+Odpowiedź:
+#!/bin/bash
+
+for plik1 in *.c
+do
+	if [[ -f "$plik1" ]]
+	then
+		bezroz="${plik1%.c}"
+
+		cc "$plik1" -o "$bezroz"
+	fi
+done
+
+Zadanie 5.
+Napisz skrypt, który wczyta listę plików do wypisania z wiersza poleceń,
+a następnie wypisze ich zawartości raz w kolejności od początku
+do końca, a raz na odwrót.
+
+Odpowiedź:
+#!/bin/bash
+
+od_poczatku() {
+	for file in "$@"; do
+		if [ -f "$file" ]; then
+			cat "$plik"
+		fi
+	done
+}
+
+od_konca() {
+	for file in "$@"; do
+		if [ -f "$file" ]; then
+			tac "$file" | rev
+		fi
+	done
+}
+
+Zadanie 6.
+Przygotuj skrypt z funkcją która będzie wypisywała tekst pokolorowany
+na zadany kolor. Niech funkcja ta przyjmuje dwa argumenty - tekst i kolor.
+
+Odpowiedź:
+#!/bin/bash
+
+kolorowanie() {
+	local przyklad="$1"
+	local kolor="$2"
+
+	declare -A kolory=(
+		["biały"]="30"
+		["czerwony"]="31"
+		["zielony"]="32"
+		["niebieski"]="33"
+		["fioletowy"]="34"
+		)
+
+	zmienna_kolor="${kolory[$kolor]}"
+
+	echo -e "\e[0;${zmienna_kolor}m${przyklad}\e[0m"
+}
+
+#przykład
+kolorowanie "Tekst w kolorze czerwonym." "czerwony"
+
+Zadanie 7.
+Przygotuj funkcje obliczającą rekurancyjnie ciąg Fibonacciego. Niech wynik
+zwraca za pomocą return.
+
+Odpowiedź:
+#!/bin/bash
+
+fibonacci() {
+    local n=$1
+    if (( n <= 0 )); then
+        return 0
+    elif (( n == 1 )); then
+        return 1
+    else
+        fibonacci $((n - 1))
+        local a=$?
+        fibonacci $((n - 2))
+        local b=$?
+        return $((a + b))
+    fi
+}
+
+
